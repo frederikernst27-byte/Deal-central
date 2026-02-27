@@ -1,516 +1,177 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Deals Central - Premium Accounts</title>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Deals Central - Premium Accounts Shop</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Syne:wght@500;700;800&display=swap" rel="stylesheet">
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --bg:#0a0a0a;--card:#151515;--muted:#9a9a9a;--text:#fff;--accent:#00ff88;--border:#232323;
+      --grad:linear-gradient(135deg,#00ff88 0%,#00cc6b 100%);
+    }
+    body{font-family:'Space Grotesk',sans-serif;background:var(--bg);color:var(--text)}
+    .container{max-width:1240px;margin:0 auto;padding:24px}
+    .hero{text-align:center;padding:48px 0 24px}
+    .logo{font-family:'Syne',sans-serif;font-size:48px;font-weight:800;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .tag{margin-top:10px;color:var(--muted)}
 
-        :root {
-            --bg-dark: #0a0a0a;
-            --bg-card: #141414;
-            --accent: #00ff88;
-            --accent-glow: 0 0 30px rgba(0, 255, 136, 0.4);
-            --text: #ffffff;
-            --text-muted: #666666;
-            --border: #1f1f1f;
-            --gradient: linear-gradient(135deg, #00ff88 0%, #00cc6a 100%);
-        }
+    .layout{display:grid;grid-template-columns:1fr 340px;gap:22px;align-items:start}
+    .products{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:10px}
+    .card h3{font-size:20px}
+    .cat{font-size:11px;color:var(--accent);border:1px solid var(--accent);padding:3px 8px;border-radius:999px;align-self:flex-start;text-transform:uppercase}
+    .desc{font-size:14px;color:var(--muted);min-height:36px}
+    .price{font-size:24px;font-weight:700;color:var(--accent)}
+    .btn{background:var(--grad);color:#052114;border:none;border-radius:10px;padding:10px 12px;font-weight:700;cursor:pointer}
+    .btn.secondary{background:transparent;color:var(--text);border:1px solid var(--border)}
 
-        body {
-            font-family: 'Space Grotesk', sans-serif;
-            background: var(--bg-dark);
-            color: var(--text);
-            min-height: 100vh;
-        }
+    .cart{position:sticky;top:18px;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px}
+    .cart h2{font-size:20px;margin-bottom:8px}
+    .cart-list{list-style:none;display:flex;flex-direction:column;gap:8px;margin:10px 0;max-height:280px;overflow:auto}
+    .cart-item{display:flex;justify-content:space-between;gap:8px;font-size:14px;border-bottom:1px dashed #2e2e2e;padding-bottom:7px}
+    .total{margin:12px 0;font-weight:700;font-size:18px}
 
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: 
-                radial-gradient(ellipse at 20% 20%, rgba(0, 255, 136, 0.08) 0%, transparent 50%),
-                radial-gradient(ellipse at 80% 80%, rgba(0, 200, 255, 0.06) 0%, transparent 50%);
-            pointer-events: none;
-            z-index: -1;
-        }
+    .section{margin-top:28px}
+    .section h2{font-family:'Syne',sans-serif;font-size:28px;margin-bottom:8px}
+    .note{color:var(--muted);font-size:14px}
+    .request-box{display:grid;gap:10px;margin-top:12px}
+    input,textarea{width:100%;background:#0f0f0f;color:#fff;border:1px solid #2a2a2a;border-radius:10px;padding:10px;font-family:inherit}
+    textarea{min-height:90px;resize:vertical}
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
-        }
+    footer{padding:40px 0 20px;color:var(--muted);font-size:13px}
+    .success{display:none;margin-top:10px;color:var(--accent);font-size:14px}
 
-        header {
-            text-align: center;
-            padding: 4rem 0;
-            animation: fadeInDown 0.8s ease;
-        }
-
-        @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .logo {
-            font-family: 'Syne', sans-serif;
-            font-size: 4rem;
-            font-weight: 800;
-            background: var(--gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 1rem;
-        }
-
-        .tagline {
-            color: var(--text-muted);
-            font-size: 1.2rem;
-            margin-bottom: 2rem;
-        }
-
-        .glow-text {
-            color: var(--accent);
-            text-shadow: var(--accent-glow);
-        }
-
-        .products {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 2rem;
-            padding: 2rem 0;
-        }
-
-        .product-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 2rem;
-            transition: all 0.4s ease;
-            position: relative;
-            overflow: hidden;
-            animation: fadeInUp 0.6s ease backwards;
-        }
-
-        .product-card:nth-child(1) { animation-delay: 0.1s; }
-        .product-card:nth-child(2) { animation-delay: 0.2s; }
-        .product-card:nth-child(3) { animation-delay: 0.3s; }
-        .product-card:nth-child(4) { animation-delay: 0.4s; }
-        .product-card:nth-child(5) { animation-delay: 0.5s; }
-        .product-card:nth-child(6) { animation-delay: 0.6s; }
-
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .product-card:hover {
-            transform: translateY(-10px);
-            border-color: var(--accent);
-            box-shadow: var(--accent-glow);
-        }
-
-        .product-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: var(--gradient);
-            transform: scaleX(0);
-            transition: transform 0.4s ease;
-        }
-
-        .product-card:hover::before {
-            transform: scaleX(1);
-        }
-
-        .product-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-        }
-
-        .product-name {
-            font-family: 'Syne', sans-serif;
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-
-        .product-desc {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .pricing {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .price-option {
-            background: var(--bg-dark);
-            padding: 1rem;
-            border-radius: 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .price-label {
-            display: flex;
-            flex-direction: column;
-            gap: 0.25rem;
-        }
-
-        .price-label span:first-child {
-            font-weight: 600;
-        }
-
-        .price-label span:last-child {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-        }
-
-        .price-value {
-            text-align: right;
-        }
-
-        .original-price {
-            text-decoration: line-through;
-            color: var(--text-muted);
-            font-size: 0.85rem;
-        }
-
-        .our-price {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--accent);
-        }
-
-        .savings {
-            background: rgba(0, 255, 136, 0.1);
-            color: var(--accent);
-            font-size: 0.75rem;
-            padding: 0.25rem 0.5rem;
-            border-radius: 4px;
-            margin-top: 0.25rem;
-            display: inline-block;
-        }
-
-        .buy-btn {
-            width: 100%;
-            background: var(--gradient);
-            color: var(--bg-dark);
-            border: none;
-            padding: 1rem;
-            border-radius: 12px;
-            font-size: 1rem;
-            font-weight: 700;
-            cursor: pointer;
-            margin-top: 1.5rem;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .buy-btn:hover {
-            box-shadow: var(--accent-glow);
-            transform: scale(1.02);
-        }
-
-        .category-badge {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            background: var(--bg-dark);
-            padding: 0.4rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--accent);
-            border: 1px solid var(--accent);
-        }
-
-        footer {
-            text-align: center;
-            padding: 4rem 0;
-            color: var(--text-muted);
-            border-top: 1px solid var(--border);
-            margin-top: 4rem;
-        }
-
-        footer a {
-            color: var(--accent);
-            text-decoration: none;
-        }
-
-        .contact-info {
-            margin-top: 1rem;
-            font-size: 0.9rem;
-        }
-
-        .stats {
-            display: flex;
-            justify-content: center;
-            gap: 3rem;
-            margin: 3rem 0;
-            flex-wrap: wrap;
-        }
-
-        .stat {
-            text-align: center;
-        }
-
-        .stat-number {
-            font-family: 'Syne', sans-serif;
-            font-size: 2.5rem;
-            font-weight: 800;
-            color: var(--accent);
-        }
-
-        .stat-label {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-        }
-
-        @media (max-width: 768px) {
-            .logo { font-size: 2.5rem; }
-            .products { grid-template-columns: 1fr; }
-            .stats { gap: 2rem; }
-        }
-    </style>
+    @media (max-width:980px){.layout{grid-template-columns:1fr}.cart{position:relative;top:0}}
+  </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <div class="logo">DEALS CENTRAL</div>
-            <p class="tagline">Premium Accounts zu <span class="glow-text">unschlagbaren Preisen</span></p>
-            
-            <div class="stats">
-                <div class="stat">
-                    <div class="stat-number">90%</div>
-                    <div class="stat-label">Sparpotenzial</div>
-                </div>
-                <div class="stat">
-                    <div class="stat-number">500+</div>
-                    <div class="stat-label">Zufriedene Kunden</div>
-                </div>
-                <div class="stat">
-                    <div class="stat-number">24/7</div>
-                    <div class="stat-label">Support</div>
-                </div>
-            </div>
-        </header>
+  <div class="container">
+    <header class="hero">
+      <div class="logo">DEALS CENTRAL</div>
+      <p class="tag">Premium Accounts Shop • digitale Angebote ab 5€</p>
+    </header>
 
-        <div class="products">
-            <!-- ChatGPT -->
-            <div class="product-card">
-                <span class="category-badge">AI</span>
-                <div class="product-icon">🤖</div>
-                <div class="product-name">ChatGPT Plus</div>
-                <div class="product-desc">Zugang zu GPT-4, Dall-E, Advanced Voice und mehr</div>
-                <div class="pricing">
-                    <div class="price-option">
-                        <div class="price-label">
-                            <span>Monatlich</span>
-                            <span>Original: $20/Monat</span>
-                        </div>
-                        <div class="price-value">
-                            <div class="original-price">€19/Monat</div>
-                            <div class="our-price">€10<span>/Monat</span></div>
-                        </div>
-                    </div>
-                    <div class="price-option">
-                        <div class="price-label">
-                            <span>Jährlich</span>
-                            <span>€8,33/Monat equivalent</span>
-                        </div>
-                        <div class="price-value">
-                            <div class="original-price">€228/Jahr</div>
-                            <div class="our-price">€90<span>/Jahr</span></div>
-                            <div class="savings">Spar €138 (60%)</div>
-                        </div>
-                    </div>
-                </div>
-                <button class="buy-btn">Jetzt kaufen</button>
-            </div>
+    <main class="layout">
+      <section>
+        <div class="products" id="products"></div>
 
-            <!-- Claude -->
-            <div class="product-card">
-                <span class="category-badge">AI</span>
-                <div class="product-icon">🧠</div>
-                <div class="product-name">Claude Pro</div>
-                <div class="product-desc">Erweiterter Zugang zu Claude 3.5 & 4 mit höheren Limits</div>
-                <div class="pricing">
-                    <div class="price-option">
-                        <div class="price-label">
-                            <span>Monatlich</span>
-                            <span>Original: $20/Monat</span>
-                        </div>
-                        <div class="price-value">
-                            <div class="original-price">€19/Monat</div>
-                            <div class="our-price">€10<span>/Monat</span></div>
-                        </div>
-                    </div>
-                    <div class="price-option">
-                        <div class="price-label">
-                            <span>Jährlich</span>
-                            <span>€8,33/Monat equivalent</span>
-                        </div>
-                        <div class="price-value">
-                            <div class="original-price">€204/Jahr</div>
-                            <div class="our-price">€90<span>/Jahr</span></div>
-                            <div class="savings">Spar €114 (56%)</div>
-                        </div>
-                    </div>
-                </div>
-                <button class="buy-btn">Jetzt kaufen</button>
-            </div>
+        <section class="section">
+          <h2>Weitere Accounts auf Vorschlag</h2>
+          <p class="note">Du suchst einen anderen Account? Auf Anfrage können weitere Angebote individuell geprüft und bereitgestellt werden.</p>
+          <form class="request-box" id="requestForm">
+            <input type="text" id="rqName" placeholder="Dein Name" required>
+            <input type="email" id="rqMail" placeholder="Deine E-Mail" required>
+            <textarea id="rqMsg" placeholder="Welche Accounts brauchst du? (z. B. Plattform, Dauer, Anzahl)" required></textarea>
+            <button class="btn" type="submit">Anfrage senden</button>
+            <div class="success" id="rqSuccess">Anfrage vorbereitet. Dein E-Mail-Programm öffnet sich jetzt.</div>
+          </form>
+        </section>
+      </section>
 
-            <!-- Gemini -->
-            <div class="product-card">
-                <span class="category-badge">AI</span>
-                <div class="product-icon">✨</div>
-                <div class="product-name">Google Gemini Advanced</div>
-                <div class="product-desc">Premium KI von Google mit Gemini 2.0 Ultra</div>
-                <div class="pricing">
-                    <div class="price-option">
-                        <div class="price-label">
-                            <span>Monatlich</span>
-                            <span>Original: €20/Monat</span>
-                        </div>
-                        <div class="price-value">
-                            <div class="original-price">€20/Monat</div>
-                            <div class="our-price">€10<span>/Monat</span></div>
-                        </div>
-                    </div>
-                    <div class="price-option">
-                        <div class="price-label">
-                            <span>Jährlich</span>
-                            <span>€8,33/Monat equivalent</span>
-                        </div>
-                        <div class="price-value">
-                            <div class="original-price">€228/Jahr</div>
-                            <div class="our-price">€90<span>/Jahr</span></div>
-                            <div class="savings">Spar €138 (60%)</div>
-                        </div>
-                    </div>
-                </div>
-                <button class="buy-btn">Jetzt kaufen</button>
-            </div>
+      <aside class="cart">
+        <h2>🛒 Einkaufswagen</h2>
+        <ul class="cart-list" id="cartList"></ul>
+        <div class="total">Gesamt: <span id="total">0.00€</span></div>
+        <button class="btn" id="paypalBtn">Mit PayPal bezahlen</button>
+        <button class="btn secondary" id="clearBtn" style="margin-top:8px;">Warenkorb leeren</button>
+        <p class="note" style="margin-top:10px;">PayPal Checkout öffnet sich mit Zusammenfassung.</p>
+      </aside>
+    </main>
 
-            <!-- Spotify -->
-            <div class="product-card">
-                <span class="category-badge">Streaming</span>
-                <div class="product-icon">🎵</div>
-                <div class="product-name">Spotify Premium</div>
-                <div class="product-desc">Werbefreie Musik, Offline-Listen, beste Qualität</div>
-                <div class="pricing">
-                    <div class="price-option">
-                        <div class="price-label">
-                            <span>Monatlich</span>
-                            <span>Original: €12/Monat</span>
-                        </div>
-                        <div class="price-value">
-                            <div class="original-price">€12/Monat</div>
-                            <div class="our-price">€10<span>/Monat</span></div>
-                        </div>
-                    </div>
-                    <div class="price-option">
-                        <div class="price-label">
-                            <span>Jährlich</span>
-                            <span>€7,50/Monat equivalent</span>
-                        </div>
-                        <div class="price-value">
-                            <div class="original-price">€120/Jahr</div>
-                            <div class="our-price">€90<span>/Jahr</span></div>
-                            <div class="savings">Spar €30 (25%)</div>
-                        </div>
-                    </div>
-                </div>
-                <button class="buy-btn">Jetzt kaufen</button>
-            </div>
+    <footer>
+      <p>© 2026 Deals Central</p>
+      <p>Kontakt: frederik.ernst27@gmail.com</p>
+      <p style="margin-top:8px">Hinweis: Angebote nur bei vorhandenen Nutzungs- und Vertriebsrechten.</p>
+    </footer>
+  </div>
 
-            <!-- Netflix -->
-            <div class="product-card">
-                <span class="category-badge">Streaming</span>
-                <div class="product-icon">🎬</div>
-                <div class="product-name">Netflix Premium</div>
-                <div class="product-desc">4K UHD, 4 Screens, Werbefrei</div>
-                <div class="pricing">
-                    <div class="price-option">
-                        <div class="price-label">
-                            <span>Monatlich</span>
-                            <span>Original: €18/Monat</span>
-                        </div>
-                        <div class="price-value">
-                            <div class="original-price">€18/Monat</div>
-                            <div class="our-price">€10<span>/Monat</span></div>
-                        </div>
-                    </div>
-                    <div class="price-option">
-                        <div class="price-label">
-                            <span>Jährlich</span>
-                            <span>€7,50/Monat equivalent</span>
-                        </div>
-                        <div class="price-value">
-                            <div class="original-price">€180/Jahr</div>
-                            <div class="our-price">€90<span>/Jahr</span></div>
-                            <div class="savings">Spar €90 (50%)</div>
-                        </div>
-                    </div>
-                </div>
-                <button class="buy-btn">Jetzt kaufen</button>
-            </div>
+  <script>
+    const PAYPAL_ME = "https://www.paypal.me/FErnst27";
 
-            <!-- Disney+ -->
-            <div class="product-card">
-                <span class="category-badge">Streaming</span>
-                <div class="product-icon">🏰</div>
-                <div class="product-name">Disney+ Premium</div>
-                <div class="product-desc">Star Wars, Marvel, Pixar - Alles in 4K</div>
-                <div class="pricing">
-                    <div class="price-option">
-                        <div class="price-label">
-                            <span>Monatlich</span>
-                            <span>Original: €14/Monat</span>
-                        </div>
-                        <div class="price-value">
-                            <div class="original-price">€14/Monat</div>
-                            <div class="our-price">€10<span>/Monat</span></div>
-                        </div>
-                    </div>
-                    <div class="price-option">
-                        <div class="price-label">
-                            <span>Jährlich</span>
-                            <span>€7,50/Monat equivalent</span>
-                        </div>
-                        <div class="price-value">
-                            <div class="original-price">€140/Jahr</div>
-                            <div class="our-price">€90<span>/Jahr</div>
-                            <div class="savings">Spar €50 (36%)</div>
-                        </div>
-                    </div>
-                </div>
-                <button class="buy-btn">Jetzt kaufen</button>
-            </div>
-        </div>
+    const items = [
+      {name:"Netflix Premium",cat:"Streaming",desc:"Monatszugang",price:10},
+      {name:"Proton VPN",cat:"VPN",desc:"Wie Netflix-Preis",price:10},
+      {name:"IPTV Paket",cat:"TV",desc:"ab 5€",price:8},
+      {name:"E-Books (EPUB Bundle)",cat:"E-Books",desc:"Themenpaket",price:6},
+      {name:"Adobe Photoshop",cat:"Software",desc:"Premium Software",price:15},
+      {name:"DaVinci Resolve",cat:"Software",desc:"Premium Software",price:12},
+      {name:"Minecraft",cat:"Gaming",desc:"Account/Key",price:10},
+      {name:"Gaming Bundle",cat:"Gaming",desc:"andere Spiele",price:12},
+      {name:"Spotify Premium",cat:"Streaming",desc:"Monatspaket",price:9},
+      {name:"YouTube Premium",cat:"Streaming",desc:"Monatspaket",price:9}
+    ];
 
-        <footer>
-            <p>© 2026 <strong>Deals Central</strong> - Premium Accounts</p>
-            <p class="contact-info">📱 Kontakt: <a href="#">@dealscentral</a></p>
-            <p style="margin-top: 1rem; font-size: 0.8rem; opacity: 0.6;">
-                *Alle Preise inkl. MwSt. | Originalpreise sind Markenpreise.
-            </p>
-        </footer>
-    </div>
+    const cart = [];
+    const productsEl = document.getElementById('products');
+    const cartListEl = document.getElementById('cartList');
+    const totalEl = document.getElementById('total');
+
+    function renderProducts(){
+      productsEl.innerHTML = items.map((p,i)=>`
+        <article class="card">
+          <span class="cat">${p.cat}</span>
+          <h3>${p.name}</h3>
+          <p class="desc">${p.desc}</p>
+          <div class="price">${p.price.toFixed(2)}€</div>
+          <button class="btn" onclick="addToCart(${i})">In den Warenkorb</button>
+        </article>
+      `).join('');
+    }
+
+    function addToCart(i){
+      cart.push(items[i]);
+      renderCart();
+    }
+
+    function removeFromCart(index){
+      cart.splice(index,1);
+      renderCart();
+    }
+
+    function renderCart(){
+      if(!cart.length){
+        cartListEl.innerHTML = '<li class="note">Noch keine Artikel im Warenkorb.</li>';
+        totalEl.textContent = '0.00€';
+        return;
+      }
+      cartListEl.innerHTML = cart.map((c,idx)=>`
+        <li class="cart-item">
+          <span>${c.name}</span>
+          <span>
+            ${c.price.toFixed(2)}€
+            <button onclick="removeFromCart(${idx})" style="margin-left:8px;background:none;border:none;color:#ff7a7a;cursor:pointer">x</button>
+          </span>
+        </li>
+      `).join('');
+      const sum = cart.reduce((a,b)=>a+b.price,0);
+      totalEl.textContent = `${sum.toFixed(2)}€`;
+    }
+
+    document.getElementById('clearBtn').addEventListener('click',()=>{cart.length=0;renderCart();});
+
+    document.getElementById('paypalBtn').addEventListener('click',()=>{
+      if(!cart.length){ alert('Bitte zuerst Artikel in den Warenkorb legen.'); return; }
+      const sum = cart.reduce((a,b)=>a+b.price,0).toFixed(2);
+      const order = cart.map(i=>`${i.name} (${i.price.toFixed(2)}€)`).join(', ');
+      const note = encodeURIComponent(`Deals Central Bestellung: ${order} | Gesamt: ${sum}€`);
+      window.open(`${PAYPAL_ME}/${sum}?note=${note}`, '_blank');
+    });
+
+    document.getElementById('requestForm').addEventListener('submit',(e)=>{
+      e.preventDefault();
+      const name = document.getElementById('rqName').value.trim();
+      const mail = document.getElementById('rqMail').value.trim();
+      const msg = document.getElementById('rqMsg').value.trim();
+      const subject = encodeURIComponent('Deals Central: Anfrage weiterer Accounts');
+      const body = encodeURIComponent(`Name: ${name}\nE-Mail: ${mail}\n\nAnfrage:\n${msg}`);
+      window.location.href = `mailto:frederik.ernst27@gmail.com?subject=${subject}&body=${body}`;
+      document.getElementById('rqSuccess').style.display = 'block';
+    });
+
+    renderProducts();
+    renderCart();
+  </script>
 </body>
 </html>
