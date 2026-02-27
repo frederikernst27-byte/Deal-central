@@ -180,13 +180,18 @@
 
       document.getElementById('gmailCompose').href = gmailWeb;
 
-      try {
-        window.location.href = mailto;
-      } catch (_) {}
+      // 1) Versuche direkt Gmail Compose in neuem Tab zu öffnen
+      const win = window.open(gmailWeb, '_blank', 'noopener');
 
+      // 2) Fallback: mailto (falls lokaler Mail-Client vorhanden)
+      if (!win) {
+        try { window.location.href = mailto; } catch (_) {}
+      }
+
+      // 3) Immer zusätzlich in Zwischenablage kopieren
       navigator.clipboard?.writeText(`Betreff: ${subjectRaw}\n\n${bodyRaw}`).catch(()=>{});
 
-      document.getElementById('rqSuccess').textContent = 'Anfrage vorbereitet. Wenn kein Mail-Programm öffnet, nutze den Gmail-Link unten.';
+      document.getElementById('rqSuccess').textContent = 'Anfrage vorbereitet. Gmail-Entwurf wurde geöffnet (oder per Fallback-Link verfügbar).';
       document.getElementById('rqSuccess').style.display = 'block';
       document.getElementById('rqFallback').style.display = 'block';
     });
